@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz – Biblioteki Cyfrowe</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
+    h1 { color: #333; }
+    .question { margin-bottom: 20px; padding: 10px; background: white; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .correct { color: green; font-weight: bold; }
+    .incorrect { color: red; font-weight: bold; }
+    .feedback { margin-top: 5px; }
+    input[type="radio"] { margin-right: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Quiz – Biblioteki Cyfrowe</h1>
+  <form id="quizForm"></form>
+
+  <script>
+    const quizData = [
+      {
+        question: "Co bierze pod uwagę PageRank przy ocenianiu danej strony?",
+        options: [
+          "liczbę i ocenę stron kierujących do ocenianej strony",
+          "liczbę i ocenę stron, do których oceniana strona zawiera linki",
+          "liczbę odwiedzin danej strony odnotowaną w Google Analytics",
+          "liczbę słów kluczowych zgodnych z szukaną frazą"
+        ],
+        correct: 0
+      },
+      {
+        question: "Jakie jest ograniczenie algorytmu PageRank w stosunku do nowych publikacji?",
+        options: [
+          "nowe publikacje mają niski wynik, bo nie są jeszcze cytowane",
+          "nowe publikacje mają zawyżony wynik ze względu na świeżość",
+          "nowe publikacje mają zawyżony wynik ze względu na cytowanie wysoko punktowanych publikacji",
+          "nowe publikacje mają niski wynik, bo młode publikacje domyślnie są uznawane za mniej ważne, dopóki się nie osiągną określonego wieku"
+        ],
+        correct: 0
+      },
+      {
+        question: "Jaka jest różnica między TrustRank a zwykłym PageRank?",
+        options: [
+          "TrustRank rozpoczyna analizę od zaufanych zasobów, aby lepiej odfiltrować spam, podczas gdy PageRank traktuje wszystkie strony jednakowo",
+          "TrustRank bierze pod uwagę liczbę pobrań/odwiedzin danego zasobu",
+          "TrustRank bierze pod uwagę tylko zasoby z określonej dziedziny/tematyki",
+          "TrustRank bierze pod uwagę treść zasobu, a nie graf odnośników/cytowań"
+        ],
+        correct: 0
+      },
+      {
+        question: "Jaka gra jako pierwsza w procesie aktywacji wymagała połączenia internetowego ze Steamem?",
+        options: [
+          "Half-Life",
+          "Team Fortress 2",
+          "Portal",
+          "Half-Life 2"
+        ],
+        correct: 3
+      },
+      {
+        question: "Jak nazywa się przenośna konsola stworzona przez Valve, która umożliwia granie w gry dostępne na bibliotece Steam?",
+        options: [
+          "Steam Pad",
+          "Steam Remote",
+          "Steam Deck",
+          "Steam Link Mobile"
+        ],
+        correct: 2
+      },
+      {
+        question: "Jak nazywa się system umożliwiający twórcom publikowanie własnych modyfikacji i dodatków do gier na Steamie?",
+        options: [
+          "Steam Forge",
+          "Steam Workshop",
+          "Steam Direct",
+          "Steam Creators Hub"
+        ],
+        correct: 1
+      }
+    ,
+      {
+        question: "System klasyfikacji stworzony przez Paula Otleta to:",
+        options: [
+          "Klasyfikacja Dziesiętna Deweya",
+          "Klasyfikacja Dwukropkowa",
+          "Uniwersalna Klasyfikacja Dziesiętna",
+          "Klasyfikacja Biblioteki Kongresu"
+        ],
+        correct: 2
+      },
+      {
+        question: "Współpracownik Paula Otleta z którym stworzył Ogólnoświatowy Rejestr Bibliograficzny to:",
+        options: [
+          "Émile Verhaeren",
+          "Auguste Beernaert",
+          "Henri Dunant",
+          "Henri La Fontaine"
+        ],
+        correct: 3
+      },
+      {
+        question: "Oryginalne Mundaneum (zbudowane w 1910) znajdowało się:",
+        options: [
+          "W Brukseli, w Belgii",
+          "W Genewie, w Szwajcarii",
+          "W Charleroi, w Belgii",
+          "W Mons, w Belgii"
+        ],
+        correct: 0
+      },
+      {
+        question: "Popularne archiwum stron internetowych, pozwalające na przeglądanie historycznych wersji witryn, będące inicjatywą projektu Internet Archive nazywa się:",
+        options: [
+          "Wayback Machine",
+          "Webtime Machine",
+          "Wayback Engine",
+          "Webback Machine"
+        ],
+        correct: 0
+      },
+      {
+        question: "Projekt Internet Archive finansowany jest przez:",
+        options: [
+          "Darowizny od użytkowników i granty od fundacji",
+          "UNESCO",
+          "Mozilla Foundation",
+          "Bibliotekę Kongresu USA"
+        ],
+        correct: 0
+      },
+      {
+        question: "Organizacja Internet Archive została założona w roku:",
+        options: [
+          "1996",
+          "1993",
+          "2003",
+          "2006"
+        ],
+        correct: 0
+      },
+      {
+        question: "Który z serwisów prezentujących śpiewniki oferuje również chwyty na gitarę (akordy)?",
+        options: [
+          "Tekstowo.pl",
+          "Genius.com",
+          "Spiewnik.Wywrota.pl",
+          "Groove.pl"
+        ],
+        correct: 2
+      },
+      {
+        question: "Który ze sposobów zapisywania utworów muzycznych NIE jest dostępny w przedstawionych bibliotekach na wykładzie?",
+        options: [
+          "pięciolinia",
+          "diagram akordu",
+          "tabulatura",
+          "śpiewnik gitarowy"
+        ],
+        correct: 0
+      },
+      {
+        question: "Która z opcji uniemożliwia stworzenie tabulatury, którą można udostępnić w bibliotekach cyfrowych?",
+        options: [
+          "GuitarPro",
+          "Tabinator.com",
+          "Rosegarden",
+          "TuxGuitar"
+        ],
+        correct: 1
+      },
+      {
+        question: "Wskaźnik Impact Factor to:",
+        options: [
+          "Indeks oceniający wartość czasopisma naukowego biorący pod uwagę indeksy Hirscha publikujących w nim autorów",
+          "Indeks oceniający wartość naukową autora publikacji naukowych",
+          "Indeks oceniający wartość naukowca biorący pod uwagę liczbę cytowań opublikowanych przez niego artykułów",
+          "Indeks oceniający wartość czasopisma naukowego biorący pod uwagę liczbę cytowań opublikowanych w nim artykułów"
+        ],
+        correct: 3
+      },
+      {
+        question: "Zaznacz prawdziwe zdanie dotyczące URN (Uniform Resource Name):",
+        options: [
+          "URN wskazuje adres obiektu w Internecie",
+          "URN jest systemem przekształcającym unikalną nazwę obiektu na jego lokalizację w sieci",
+          "URN wskazuje lokalizację obiektu w bibliotece cyfrowej, pełni tę samą rolę, co URL w Internecie",
+          "URN jest trwałym identyfikatorem na stałe związanym z obiektem, a nie jego lokalizacją"
+        ],
+        correct: 3
+      },
+      {
+        question: "Protokół \"robot exclusion protocol\":",
+        options: [
+          "Jest to protokół pozwalający robotom na śledzenie zawartości stron WWW w celu wyszukiwania niedozwolonych treści lub zasobów chronionych prawem autorskim",
+          "Jest to protokół pozwalający na śledzenie hiperłączy umieszczonych na stronach WWW w celu indeksowania stron i tworzenia rankingów",
+          "Jest to protokół \"honorowy\" informujący automaty (np. indeksujące), czego nie powinny robić na stronie WWW. \"Honorowy\" oznacza, że żaden mechanizm nie wymusza na automatach egzekwowania tego, ale większość się do niego stosuje.",
+          "Jest to protokół stosowany przede wszystkim w bibliotekach cyfrowych do komunikacji między jej rozproszonymi zasobami. Pozwala zidentyfikować i wyeliminować zduplikowane zasoby, nawet jeśli ich opis bibliograficzny jest różny"
+        ],
+        correct: 2
+      },
+      {
+        question: "Zaznacz prawdziwe zdanie dotyczące praw autorskich:",
+        options: [
+          "Właściciel kopii dzieła ma prawo ją odsprzedać, ale nie ma prawa dokonywać redystrybucji",
+          "Prawa autorskie wygasają z chwilą śmierci autora",
+          "Po stworzeniu dzieła należy je zarejestrować w odpowiedniej instytucji, aby zostały przypisane prawa autorskie do danego dzieła",
+          "Pracodawca twórcy nie może być właścicielem praw autorskich"
+        ],
+        correct: 0
+      },
+      {
+        question: "UTF-8 to:",
+        options: [
+          "blok znaków Unicode dla języków europejskich i cyrylicy",
+          "format pozwalający na przekształcenie punktu kodowego Unicode na ciąg bitów (maks 4 bajty)",
+          "inna nazwa punktu kodowego Unicode o długości maks 8 bajtów",
+          "format zapisu punktu kodowego Unicode na 8 bitach, np. dla punktu kodowego U+0015 zapis w UTF-8 wygląda następująco: 0000 1111"
+        ],
+        correct: 1
+      },
+      {
+        question: "Zaznacz fałszywe zdanie dotyczące DOI (Digital Object Identifier):",
+        options: [
+          "Aby przejść do zasobu identyfikowanego przez DOI, trzeba mieć zainstalowane oprogramowanie do interpretacji DOI",
+          "DOI jest trwałym identyfikatorem na stałe związanym z obiektem, a nie jego lokalizacją",
+          "DOI jest zrealizowane na bazie Handle System i zarejestrowane w Global Handle Registry z numerem początkowym 10",
+          "DOI jest powszechnie wykorzystywane do identyfikowania publikacji naukowych"
+        ],
+        correct: 0
+      },
+      {
+        question: "\"Wydanie\" w kontekście utworu to:",
+        options: [
+          "sposób prezentacji pracy mogący różnić się formatowaniem, ale nie treścią",
+          "każda kopia utworu",
+          "sposób prezentacji pracy, mogący różnić się treścią od poprzedniego wydania",
+          "fizyczny obiekt reprezentujący utwór"
+        ],
+        correct: 2
+      },
+      {
+        question: "Kody $a i $d w MARC21: 100 1# $a Demichowicz-Pigoniowa, Jadwiga $d #-1978 oznaczają:",
+        options: [
+          "$a oznacza, że nazwa autora zaczyna się od nazwiska, zaś $d oznacza, że nie jest znany rok urodzenia autora",
+          "stosuje się je do rozdzielania treści pola i nie mają one żadnej semantyki (znaczenia)",
+          "dodają podkategorie do treści pola",
+          "są numeracją kolejnych linii w treści pola wielolinijkowego"
+        ],
+        correct: 2
+      },
+      {
+        question: "W zapisie MARC21: 100 oznacza:",
+        options: [
+          "jest to liczba binarna - w tym przypadku oznacza, że jest to czwarte pole w rekordzie",
+          "jest to symbol dla systemu bibliotecznego, nie niesie żadnej informacji dla człowieka",
+          "jest to etykieta pola łącząca je z analogowym egzemplarzem utworu",
+          "jest to etykieta pola, w tym przypadku oznacza hasło główne – nazwa osobowa"
+        ],
+        correct: 3
+      },
+      {
+        question: "Format DjVu służy do:",
+        options: [
+          "Wyświetlania grafiki 3D na stronach bibliotek cyfrowych",
+          "Przechowywania rozpoznanego tekstu z zeskanowanych dokumentów",
+          "Tworzenia metadanych dla zasobów skanowanych",
+          "Kompresji stratnej dokumentów tekstowych i grafiki"
+        ],
+        correct: 3
+      },
+      {
+        question: "Bibliometria to:",
+        options: [
+          "Zbiór ogólnych wytycznych dotyczących opisów bibliograficznych. Na ich podstawie tworzone są różne formaty metadanych",
+          "Zbiór miar oceniających jakość biblioteki cyfrowej",
+          "Zbiór miar związanych z zasobami biblioteki, np.: wielkość woluminu, liczba egzemplarzy, liczba stron itp.",
+          "Zbiór metod matematycznych oraz statystycznych do analizy i oceny książek, artykułów i innych publikacji"
+        ],
+        correct: 3
+      },
+      {
+        question: "\"Praca\" w kontekście utworu to:",
+        options: [
+          "utwór, który ma nadany numer ISBN",
+          "wyodrębniona, bezpostaciowa zawartość utworu",
+          "fizyczny obiekt reprezentujący utwór",
+          "wysiłek włożony w dygitalizację zasobu"
+        ],
+        correct: 1
+      },
+      {
+        question: "Zaznacz fałszywe zdanie dotyczące punktu kodowego Unicode:",
+        options: [
+          "Reprezentuje zawsze jeden znak",
+          "Może reprezentować ligatury, np fi",
+          "Jeden znak może być reprezentowany w różny sposób, np jako jeden punkt kodowy albo złożenie dwóch punktów kodowych",
+          "Może reprezentować część znaku, np dwie kropki wstawiane nad literą"
+        ],
+        correct: 0
+      },
+      {
+        question: "W zapisie MARC21: 1# oznacza:",
+        options: [
+          "jest to numeracja kolejnych pól w rekordzie, to jest akurat drugie pole w rekordzie (bo numerujemy od 0)",
+          "jest to symbol dla systemu bibliotecznego, nie niesie żadnej informacji dla człowieka",
+          "jest to zapis w formie wyrażenia regularnego i reprezentuje wszystkie liczby dwucyfrowe zaczynające się od 1",
+          "jest to wskaźnik pola, w tym przypadku oznacza, że nazwisko autora wystąpi jako pierwsze"
+        ],
+        correct: 3
+      },
+      {
+        question: "Wskaż strukturę standardowego pola MARC:",
+        options: [
+          "Etykieta pola + wskaźnik + treść pola",
+          "Etykieta pola + ogranicznik + kod pola",
+          "Etykieta pola + kod pola + wskaźnik + ogranicznik",
+          "Kod kontrolny + ogranicznik + treść pola"
+        ],
+        correct: 0
+      },
+      {
+        question: "Zaznacz prawdziwe zdanie dotyczące algorytmu PageRank:",
+        options: [
+          "Algorytm przestał być wydajny przez ogromny wzrost liczby stron internetowych",
+          "Szczegóły algorytmu można znaleźć w pracy doktorskiej Larry’ego Page’a i Siergieja Brina",
+          "Algorytm jest wciąż w użyciu, ale jego wyniki nie są publikowane",
+          "Algorytm nie jest już używany, gdyż SEO umieli bez problemu tworzyć serwisy podbijające ranking strony oparty na tym algorytmie"
+        ],
+        correct: 1
+      },
+	  {
+        question: "Którego roku miała miejsce globalna premiera platformy Webtoon?",
+        options: [
+          "2014",
+          "2005",
+          "2016",
+          "2008"
+        ],
+        correct: 0
+      },
+      {
+        question: "Jaką nazwą określa się komiksy publikowane na platformie Webtoon przez niezależnych twórców?",
+        options: [
+          "Canvas",
+          "Originals",
+          "Featured",
+          "Rising Star"
+        ],
+        correct: 0
+      },
+      {
+        question: "Z jaką częstotliwością publikowane są nowe rozdziały komiksów z serii Webtoon Originals?",
+        options: [
+          "Tylko raz w tygodniu",
+          "Co najmniej raz w tygodniu",
+          "Codziennie",
+          "Nie jest to z góry ustalone"
+        ],
+        correct: 1
+      },
+      {
+        question: "Jaki procent wartości \"Super Like\" otrzymuje twórca komiksu od czytelnika?",
+        options: [
+          "50%",
+          "30%",
+          "70%",
+          "100%"
+        ],
+        correct: 2
+      }
+    ];
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const shuffledQuiz = shuffleArray(quizData.map((item, idx) => {
+      const options = item.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+      shuffleArray(options);
+      const newCorrectIndex = options.findIndex(o => o.originalIndex === item.correct);
+      return {
+        question: item.question,
+        options: options.map(o => o.text),
+        correct: newCorrectIndex
+      };
+    }));
+
+    const form = document.getElementById('quizForm');
+
+    shuffledQuiz.forEach((item, index) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'question';
+      const qName = `q${index}`;
+
+      const qHTML = [`<p><strong>${index + 1}. ${item.question}</strong></p>`];
+      item.options.forEach((opt, i) => {
+        qHTML.push(`<label><input type="radio" name="${qName}" value="${i}"> ${opt}</label><br>`);
+      });
+      qHTML.push(`<div class="feedback" id="feedback-${qName}"></div>`);
+      qDiv.innerHTML = qHTML.join('');
+      form.appendChild(qDiv);
+    });
+
+    // Obsługa odpowiedzi i feedbacku
+    document.querySelectorAll('.question').forEach((question, qIdx) => {
+      const name = `q${qIdx}`;
+      const correct = shuffledQuiz[qIdx].correct;
+      question.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', () => {
+          const feedback = document.getElementById(`feedback-${name}`);
+          if (parseInt(input.value) === correct) {
+            feedback.textContent = 'Dobrze!';
+            feedback.className = 'feedback correct';
+          } else {
+            feedback.textContent = 'Źle!';
+            feedback.className = 'feedback incorrect';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
